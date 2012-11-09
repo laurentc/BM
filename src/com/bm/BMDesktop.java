@@ -28,7 +28,7 @@ public class BMDesktop {
 	public BMDesktop(Context context) {
 		this.context = context;
 	}
-
+	
 	public static BMDesktop getInstance (Context context){
 		if(instance == null){
 			instance = new BMDesktop(context);
@@ -78,7 +78,7 @@ public class BMDesktop {
         StringBuilder content = new StringBuilder();
 		try {
 			url = new URL(BM_URI);
-	        URLConnection con = url.openConnection(Proxy.NO_PROXY);
+	        URLConnection con = url.openConnection();
 			try{
 				InputStreamReader isr = new InputStreamReader(con.getInputStream());
 				br =  new BufferedReader(isr);
