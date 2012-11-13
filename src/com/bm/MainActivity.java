@@ -5,6 +5,7 @@ import java.util.Calendar;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,29 +14,26 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
+import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 	Button refresh = null;
-	ProgressBar wait = null;
+	Button launchpreview = null;
 	CheckBox schedule = null;
+	ImageView preview = null;
 	BMDBParameters parameters = null;
-	
-	private OnClickListener refreshDesktop = new OnClickListener() {
-		
-		public void onClick(View v) {
-			setWait(true);
-			BMDesktop bm = BMDesktop.getInstance(getApplicationContext());
-			bm.refreshDesktop();
-			setWait(false);
-		}
-	};
 	
 	private OnClickListener scheduleAction = new OnClickListener() {
 		
 		public void onClick(View v) {
 			setSchedule(schedule.isChecked());
+		}
+	};
+	
+	private OnClickListener maskPreview = new OnClickListener() {
+		
+		public void onClick(View v) {
+			preview.setVisibility(ImageView.INVISIBLE);
 		}
 	};
 	
@@ -55,31 +53,25 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-	public void setWait(boolean status){
-		if(status){
-			wait.setVisibility(ProgressBar.VISIBLE);
-			refresh.setClickable(false);
-		}else{
-			wait.setVisibility(ProgressBar.INVISIBLE);
-			refresh.setClickable(true);
-		}
-	}
-	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         parameters = BMDBParameters.getInstance(getApplicationContext());
+		BMDesktop.getInstance(getApplicationContext()).clearCache();
 
         setContentView(R.layout.activity_main);
-        
+
         refresh = (Button)findViewById(R.id.refresh);
-        wait = (ProgressBar)findViewById(R.id.wait);
         schedule = (CheckBox)findViewById(R.id.schedule);
+        preview = (ImageView)findViewById(R.id.preview);
+        launchpreview = (Button)findViewById(R.id.launchpreview);
         boolean isSchedule = (parameters.getValue("schedule") != null && parameters.getValue("schedule").equals("1"))?true:false;
-        schedule.setChecked(isSchedule);
+        schedule.setChecked(isSchedule);        
         
-        refresh.setOnClickListener(refreshDesktop);  
+        refresh.setOnClickListener(new BMDesktopOnClickListener(this));  
         schedule.setOnClickListener(scheduleAction);
+        preview.setOnClickListener(maskPreview);
+        launchpreview.setOnClickListener(new BMShowpreviewOnClickListener(this));
     }
 
     @Override

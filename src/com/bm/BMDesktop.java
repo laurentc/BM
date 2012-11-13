@@ -17,13 +17,15 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.widget.Toast;
+import android.util.Log;
 
 public class BMDesktop {
 	private static BMDesktop instance = null;
-	public final String BM_URI = "http://www.bonjourmadame.fr";
+	//public final String BM_URI = "http://www.bonjourmadame.fr";
+	public final String BM_URI = "http://darkrain.fr/slide/";
 	public final String BM_PATTERN = "<div[^>]*class=\"photo-panel\">.+?<img[^>]*src=\"([^\"]*)\"";
 	private Context context = null;
+	private String uri = null;
 
 	public BMDesktop(Context context) {
 		this.context = context;
@@ -46,27 +48,29 @@ public class BMDesktop {
 				Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
 				WallpaperManager wpm = WallpaperManager.getInstance(context);
 				wpm.setBitmap(bitmap);
-				Toast.makeText(context, "Fond d'écran modifié", Toast.LENGTH_SHORT).show();
 				
 				return true;
 			} catch (MalformedURLException e) {
-				System.out.println(e);
+				Log.e("ERROR", e.getMessage());
 			} catch (IOException e) {
-				System.out.println(e);
+				Log.e("ERROR", e.getMessage());
 			}		
 		}
 		
 		return false;
 	}
 	
-	private String getImageURI(){
+	public String getImageURI(){
+		if(uri != null){
+			return uri;
+		}
 		String content = getURIContent();
 		Pattern pattern = Pattern.compile(BM_PATTERN, Pattern.DOTALL);
 		Matcher mtc = pattern.matcher(content.toString());				
 		if(mtc.find()){
 			return mtc.group(1);
 		}else{
-			Toast.makeText(context, "Image non trouvée", Toast.LENGTH_SHORT).show();
+			Log.e("INFO", "Image non trouvée");
 		}
 		
 		return null;
@@ -78,19 +82,19 @@ public class BMDesktop {
         StringBuilder content = new StringBuilder();
 		try {
 			url = new URL(BM_URI);
-	        URLConnection con = url.openConnection();
+	        URLConnection con = url.openConnection(Proxy.NO_PROXY);
 			try{
 				InputStreamReader isr = new InputStreamReader(con.getInputStream());
 				br =  new BufferedReader(isr);
 			}catch(ClientProtocolException e){
-				System.out.println(e);
+				Log.e("ERROR", e.getMessage());
 			}catch(IOException e){
-				System.out.println(e);
+				Log.e("ERROR", e.getMessage());
 			}
 		} catch (MalformedURLException e) {
-			System.out.println(e);
+			Log.e("ERROR", e.getMessage());
 		} catch (IOException e) {
-			System.out.println(e);
+			Log.e("ERROR", e.getMessage());
 		}
 		if(br != null){
 			try {
@@ -99,13 +103,17 @@ public class BMDesktop {
 					content.append("\n" + line);
 				}
 			} catch (FileNotFoundException e) {
-				System.out.println(e);
+				Log.e("ERROR", e.getMessage());
 			} catch (IOException e) {
-				System.out.println(e);
+				Log.e("ERROR", e.getMessage());
 			}
 		}
 		
 		return content.toString();
+	}
+	
+	public void clearCache(){
+		uri = null;
 	}
 
 }

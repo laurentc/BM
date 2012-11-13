@@ -10,6 +10,7 @@ public class BMLauncher extends Activity{
 	public static void main(String[] args) {
 		BMLauncher handle = new BMLauncher();
 		BMDesktop bm = BMDesktop.getInstance(handle.getApplicationContext());
+		bm.clearCache();
 		bm.refreshDesktop();
 	}
 

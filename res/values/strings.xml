@@ -4,7 +4,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">Bonjour Madame</string>
-    <string name="refresh_desktop">Rafraichir de fond d\'écran</string>
+    <string name="refresh_desktop">Rafraichir le fond d\'écran</string>
     <string name="schedule">Changer le fond d\'écran tous les jours à 10h</string>
+    <string name="preview">Prévisualisation</string>
 
 </resources>

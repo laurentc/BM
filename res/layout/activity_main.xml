@@ -12,25 +12,31 @@
         android:layout_alignParentTop="true"
         android:text="@string/refresh_desktop" />
 
-    <ProgressBar
-        android:id="@+id/wait"
-        style="?android:attr/progressBarStyleLarge"
+    <Button
+        android:id="@+id/launchpreview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:indeterminate="true"
-        android:indeterminateOnly="true"
-        android:isScrollContainer="true"
-        android:soundEffectsEnabled="true"
-        android:visibility="invisible" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/refresh"
+        android:text="@string/preview" />
 
     <CheckBox
         android:id="@+id/schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/refresh"
+        android:layout_below="@+id/launchpreview"
         android:text="@string/schedule" />
     
+    <ImageView
+        android:id="@+id/preview"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+		android:background="#000000"
+		android:padding="1dp" />
+
 </RelativeLayout>
