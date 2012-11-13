@@ -21,8 +21,7 @@ import android.util.Log;
 
 public class BMDesktop {
 	private static BMDesktop instance = null;
-	//public final String BM_URI = "http://www.bonjourmadame.fr";
-	public final String BM_URI = "http://darkrain.fr/slide/";
+	public final String BM_URI = "http://www.bonjourmadame.fr";
 	public final String BM_PATTERN = "<div[^>]*class=\"photo-panel\">.+?<img[^>]*src=\"([^\"]*)\"";
 	private Context context = null;
 	private String uri = null;
