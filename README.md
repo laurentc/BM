@@ -13,4 +13,4 @@ v0.1:
   TODO :
   - ProgressBar modale lors de la récupération du rafraichissement
   - tâche planifiée : récupérer l'image tout les jours vers 10h
-  - ajout d'une prévisualisation + radiobox activant/désactivant la tâche planifiée
+  - ajout d'une prévisualisation + checkbox activant/désactivant la tâche planifiée
