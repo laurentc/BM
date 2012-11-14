@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 	private OnClickListener scheduleAction = new OnClickListener() {
 		
 		public void onClick(View v) {
-			setSchedule(schedule.isChecked());
+			setSchedule();
 		}
 	};
 	
@@ -36,15 +36,16 @@ public class MainActivity extends Activity {
 		}
 	};
 	
-	private void setSchedule(boolean status){
-	    AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+	public void setSchedule(){
+	    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 	    Calendar calendar = Calendar.getInstance();
 	    calendar.set(Calendar.HOUR_OF_DAY, 10);
 	    calendar.set(Calendar.MINUTE, 30);
-	    calendar.set(Calendar.SECOND, 0);
-	    PendingIntent pi = PendingIntent.getService(getApplicationContext(), 0, new Intent(getApplicationContext(), BMLauncher.class), PendingIntent.FLAG_UPDATE_CURRENT);
-		if(status){
-		    am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
+	    calendar.set(Calendar.SECOND, 30);
+	    PendingIntent pi = PendingIntent.getService(this, 666, new Intent(this, BMAlarmReceiverActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+		if(schedule.isChecked()){
+		    //am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
+		    am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 60 * 5, pi);
 		    parameters.setValue("schedule", "1");
 		}else{
 			am.cancel(pi);
@@ -55,8 +56,8 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parameters = BMDBParameters.getInstance(getApplicationContext());
-		BMDesktop.getInstance(getApplicationContext()).clearCache();
+        parameters = BMDBParameters.getInstance(this);
+		BMDesktop.getInstance(this).clearCache();
 
         setContentView(R.layout.activity_main);
 

@@ -2,10 +2,11 @@
 
     <string name="app_name">Bonjour Madame</string>
     <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
+    <string name="menu_settings">Options</string>
     <string name="title_activity_main">Bonjour Madame</string>
+    <string name="title_activity_receiver">Alarm Receiver</string>
     <string name="refresh_desktop">Rafraichir le fond d\'écran</string>
-    <string name="schedule">Changer le fond d\'écran tous les jours à 10h</string>
+    <string name="schedule">Changer le fond d\'écran tous les jours</string>
     <string name="preview">Prévisualisation</string>
 
 </resources>
