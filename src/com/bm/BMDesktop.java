@@ -45,9 +45,8 @@ public class BMDesktop {
 		if(imageURI != null){
 			try {
 				url = new URL(imageURI);
-				Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
 				WallpaperManager wpm = WallpaperManager.getInstance(context);
-				wpm.setBitmap(bitmap);
+				wpm.setStream(url.openStream());
 				
 				return true;
 			} catch (MalformedURLException e) {

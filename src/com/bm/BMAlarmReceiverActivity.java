@@ -7,6 +7,7 @@ public class BMAlarmReceiverActivity extends Activity{
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		BMDesktop bm = BMDesktop.getInstance(this);
 		bm.clearCache();
 		bm.refreshDesktop();

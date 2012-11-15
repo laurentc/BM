@@ -39,13 +39,14 @@ public class MainActivity extends Activity {
 	public void setSchedule(){
 	    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 	    Calendar calendar = Calendar.getInstance();
-	    calendar.set(Calendar.HOUR_OF_DAY, 10);
+	    /*calendar.set(Calendar.HOUR_OF_DAY, 10);
 	    calendar.set(Calendar.MINUTE, 30);
-	    calendar.set(Calendar.SECOND, 30);
+	    calendar.set(Calendar.SECOND, 30);*/
+	    calendar.add(Calendar.SECOND, 30);
 	    PendingIntent pi = PendingIntent.getService(this, 666, new Intent(this, BMAlarmReceiverActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 		if(schedule.isChecked()){
 		    //am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
-		    am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 60 * 5, pi);
+		    am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
 		    parameters.setValue("schedule", "1");
 		}else{
 			am.cancel(pi);
