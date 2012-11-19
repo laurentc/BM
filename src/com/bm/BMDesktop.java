@@ -15,10 +15,14 @@ import org.apache.http.client.ClientProtocolException;
 
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
+import android.graphics.Rect;
 import android.util.Log;
 
 public class BMDesktop {
-	private static BMDesktop instance = null;
+	private static BMDesktop instance = null; 
 	public final String BM_URI = "http://www.bonjourmadame.fr";
 	//public final String BM_URI = "http://darkrain.fr/slide/";
 	public final String BM_PATTERN = "<div[^>]*class=\"photo-panel\">.+?<img[^>]*src=\"([^\"]*)\"";
@@ -44,14 +48,18 @@ public class BMDesktop {
 			try {
 				url = new URL(imageURI);
 				WallpaperManager wpm = WallpaperManager.getInstance(context);
-				wpm.setStream(url.openStream());
+				Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
+				Bitmap resized = Bitmap.createScaledBitmap(bitmap, wpm.getDesiredMinimumWidth(), wpm.getDesiredMinimumHeight(), false);
+				wpm.setBitmap(resized);
 				
 				return true;
 			} catch (MalformedURLException e) {
-				Log.e("ERROR", e.getMessage());
+				Log.e("refreshDesktop", e.getMessage());
 			} catch (IOException e) {
-				Log.e("ERROR", e.getMessage());
-			}		
+				Log.e("refreshDesktop", e.getMessage());
+			}catch (Exception e){
+				Log.e("refreshDesktop", e.getMessage());
+			}
 		}
 		
 		return false;
