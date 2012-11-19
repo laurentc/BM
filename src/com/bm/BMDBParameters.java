@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class BMDBParameters {
+	
+	public static final String VAR_SCHEDULE = "schedule";
 
 	private static final int VERSION_BDD = 1;
 	private static final String NOM_BDD = "bmadame.db";

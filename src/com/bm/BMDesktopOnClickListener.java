@@ -6,9 +6,9 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 public class BMDesktopOnClickListener implements OnClickListener {
-	MainActivity activity = null;
+	BMMainActivity activity = null;
 
-	BMDesktopOnClickListener(MainActivity pActivity){
+	BMDesktopOnClickListener(BMMainActivity pActivity){
 		activity = pActivity;
 	}
 

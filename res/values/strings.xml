@@ -8,5 +8,7 @@
     <string name="refresh_desktop">Rafraichir le fond d\'écran</string>
     <string name="schedule">Changer le fond d\'écran tous les jours</string>
     <string name="preview">Prévisualisation</string>
+    <string name="schedule_activate">Tâche planifiée activée</string>
+    <string name="schedule_desactivate">Tâche planifiée désactivée</string>
 
 </resources>

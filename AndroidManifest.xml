@@ -15,20 +15,20 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-    	<receiver android:name=".BMBootCompletedReceiver">
+    	<!-- receiver android:name=".BMBootCompletedReceiver">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
-		</receiver>
+		</receiver-->
         <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:name="com.bm.BMMainActivity"
+            android:label="@string/title_activity_main" android:launchMode="singleInstance" android:multiprocess="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BMAlarmReceiverActivity"/>
+        <activity android:name="com.bm.BMAlarmReceiverActivity" android:theme="@android:style/Theme.NoDisplay"/>
     </application>
 
 </manifest>

@@ -9,7 +9,7 @@ public class BMBootCompletedReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		MainActivity ma = new MainActivity();
+		BMMainActivity ma = new BMMainActivity();
 		ma.setSchedule();
 	}
 }

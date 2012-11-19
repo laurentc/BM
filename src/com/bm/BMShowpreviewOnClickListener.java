@@ -13,9 +13,9 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 public class BMShowpreviewOnClickListener implements OnClickListener {
-	MainActivity activity = null;
+	BMMainActivity activity = null;
 
-	BMShowpreviewOnClickListener(MainActivity pActivity){
+	BMShowpreviewOnClickListener(BMMainActivity pActivity){
 		activity = pActivity;
 	}
 
