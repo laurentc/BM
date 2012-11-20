@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class BMMainActivity extends Activity {
@@ -23,6 +24,7 @@ public class BMMainActivity extends Activity {
 	CheckBox schedule = null;
 	ImageView preview = null;
 	BMDBParameters parameters = null;
+	RelativeLayout previewLo = null;
 	
 	private OnClickListener scheduleAction = new OnClickListener() {
 		
@@ -39,7 +41,7 @@ public class BMMainActivity extends Activity {
 	private OnClickListener maskPreview = new OnClickListener() {
 		
 		public void onClick(View v) {
-			preview.setVisibility(ImageView.INVISIBLE);
+			previewLo.setVisibility(RelativeLayout.INVISIBLE);
 		}
 	};
 	
@@ -75,7 +77,8 @@ public class BMMainActivity extends Activity {
         preview = (ImageView)findViewById(R.id.preview);
         launchpreview = (Button)findViewById(R.id.launchpreview);
         boolean isSchedule = (parameters.getValue("schedule") != null && parameters.getValue("schedule").equals("1"))?true:false;
-        schedule.setChecked(isSchedule);        
+        schedule.setChecked(isSchedule);
+        previewLo = (RelativeLayout)findViewById(R.id.previewLo);
         
         refresh.setOnClickListener(new BMDesktopOnClickListener(this));  
         schedule.setOnClickListener(scheduleAction);

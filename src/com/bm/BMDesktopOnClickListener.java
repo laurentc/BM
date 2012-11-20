@@ -18,7 +18,7 @@ public class BMDesktopOnClickListener implements OnClickListener {
 			
 			public void run() {
 				final boolean success = BMDesktop.getInstance(v.getContext()).refreshDesktop();
-				activity.runOnUiThread(new Runnable() {			
+				activity.runOnUiThread(new Runnable() {
 					public void run() {
 						wait.dismiss();
 						if(success){

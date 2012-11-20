@@ -17,14 +17,12 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
-import android.graphics.Rect;
 import android.util.Log;
 
 public class BMDesktop {
 	private static BMDesktop instance = null; 
 	public final String BM_URI = "http://www.bonjourmadame.fr";
-	//public final String BM_URI = "http://darkrain.fr/slide/";
+	//public final String BM_URI = "http://www.darkrain.fr/slide/";
 	public final String BM_PATTERN = "<div[^>]*class=\"photo-panel\">.+?<img[^>]*src=\"([^\"]*)\"";
 	private Context context = null;
 	private String uri = null;
@@ -42,23 +40,25 @@ public class BMDesktop {
 	}
 	
 	public boolean refreshDesktop(){
-		URL url;
 		String imageURI = getImageURI();
 		if(imageURI != null){
 			try {
-				url = new URL(imageURI);
 				WallpaperManager wpm = WallpaperManager.getInstance(context);
-				Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
-				Bitmap resized = Bitmap.createScaledBitmap(bitmap, wpm.getDesiredMinimumWidth(), wpm.getDesiredMinimumHeight(), false);
+				Bitmap bitmap = getImage();
+				int width = wpm.getDesiredMinimumWidth();//960
+				int height = wpm.getDesiredMinimumHeight();//800
+				int imageWidth = bitmap.getWidth();
+				int imageHeight = bitmap.getHeight();
+				Bitmap resized = Bitmap.createScaledBitmap(bitmap, imageWidth, height, false);
 				wpm.setBitmap(resized);
 				
 				return true;
 			} catch (MalformedURLException e) {
-				Log.e("refreshDesktop", e.getMessage());
+				Log.e("BMDesktop.refreshDesktop", e.getMessage());
 			} catch (IOException e) {
-				Log.e("refreshDesktop", e.getMessage());
+				Log.e("BMDesktop.refreshDesktop", e.getMessage());
 			}catch (Exception e){
-				Log.e("refreshDesktop", e.getMessage());
+				Log.e("BMDesktop.refreshDesktop", e.getMessage());
 			}
 		}
 		
@@ -75,7 +75,7 @@ public class BMDesktop {
 		if(mtc.find()){
 			return mtc.group(1);
 		}else{
-			Log.e("INFO", "Image non trouvée");
+			Log.i("BMDesktop.getImageURI", "Image non trouvée");
 		}
 		
 		return null;
@@ -92,14 +92,14 @@ public class BMDesktop {
 				InputStreamReader isr = new InputStreamReader(con.getInputStream());
 				br =  new BufferedReader(isr);
 			}catch(ClientProtocolException e){
-				Log.e("ERROR", e.getMessage());
+				Log.e("BMDesktop.getURIContent", e.getMessage());
 			}catch(IOException e){
-				Log.e("ERROR", e.getMessage());
+				Log.e("BMDesktop.getURIContent", e.getMessage());
 			}
 		} catch (MalformedURLException e) {
-			Log.e("ERROR", e.getMessage());
+			Log.e("BMDesktop.getURIContent", e.getMessage());
 		} catch (IOException e) {
-			Log.e("ERROR", e.getMessage());
+			Log.e("BMDesktop.getURIContent", e.getMessage());
 		}
 		if(br != null){
 			try {
@@ -108,9 +108,9 @@ public class BMDesktop {
 					content.append("\n" + line);
 				}
 			} catch (FileNotFoundException e) {
-				Log.e("ERROR", e.getMessage());
+				Log.e("BMDesktop.getURIContent", e.getMessage());
 			} catch (IOException e) {
-				Log.e("ERROR", e.getMessage());
+				Log.e("BMDesktop.getURIContent", e.getMessage());
 			}
 		}
 		
@@ -121,4 +121,21 @@ public class BMDesktop {
 		uri = null;
 	}
 
+	public Bitmap getImage(){
+		URL url;
+		String uri = getImageURI();
+		if(uri != null){
+			try {
+				url = new URL(getImageURI());
+				URLConnection uc = url.openConnection(Proxy.NO_PROXY);			
+				return BitmapFactory.decodeStream(uc.getInputStream());		
+			} catch (MalformedURLException e) {
+				Log.e("BMDesktop.getImage", e.getMessage());
+			} catch (IOException e) {
+				Log.e("BMDesktop.getImage", e.getMessage());
+			}
+		}
+		
+		return null;
+	}
 }
