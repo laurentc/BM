@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -25,6 +26,16 @@ public class BMMainActivity extends Activity {
 	ImageView preview = null;
 	BMDBParameters parameters = null;
 	RelativeLayout previewLo = null;
+	
+	
+	private void init(){
+		if(parameters.getValue("url") == null){
+			parameters.setValue("url", "http://www.bonjourmadame.fr");
+		}
+		if(parameters.getValue("pattern") == null){
+			parameters.setValue("pattern", "<div[^>]*class=\"photo-panel\">.+?<img[^>]*src=\"([^\"]*)\"");
+		}
+	}
 	
 	private OnClickListener scheduleAction = new OnClickListener() {
 		
@@ -48,13 +59,13 @@ public class BMMainActivity extends Activity {
 	public void setSchedule(){
 	    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 	    Calendar calendar = Calendar.getInstance();
-	    calendar.set(Calendar.HOUR_OF_DAY, 10);
-	    calendar.set(Calendar.MINUTE, 30);
+	    //calendar.set(Calendar.HOUR_OF_DAY, 10);
+	    //calendar.set(Calendar.MINUTE, 30);
         Intent intent = new Intent(this, BMAlarmReceiverActivity.class);
         PendingIntent pi = PendingIntent.getActivity(this, 666, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		if(parameters.getValue(BMDBParameters.VAR_SCHEDULE) != null
 				&& parameters.getValue(BMDBParameters.VAR_SCHEDULE).equals("1")){
-	        am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
+	        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 30000, 30000, pi);
 		    parameters.setValue("schedule", "1");
 		    Toast.makeText(this, R.string.schedule_activate, Toast.LENGTH_SHORT).show();
 		}else{
@@ -69,6 +80,7 @@ public class BMMainActivity extends Activity {
         super.onCreate(savedInstanceState);
         parameters = BMDBParameters.getInstance(this);
 		BMDesktop.getInstance(this).clearCache();
+		init();
 
         setContentView(R.layout.index);
         
@@ -88,7 +100,19 @@ public class BMMainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.activity_main, menu);
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        
         return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	if(item.getItemId() == R.id.menu_settings){
+    		startActivity(new Intent(this,BMOptionActivity.class));
+    		
+    		return true;
+    	}
+    	
+    	return false;
     }
 }

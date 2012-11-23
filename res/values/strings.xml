@@ -9,5 +9,9 @@
     <string name="preview">Prévisualisation</string>
     <string name="schedule_activate">Tâche planifiée activée</string>
     <string name="schedule_desactivate">Tâche planifiée désactivée</string>
+    <string name="option_activity_main">Options</string>
+    <string name="site_label">URL à parser</string>
+    <string name="pattern_label">Pattern</string>
+    <string name="save">Enregistrer</string>
 
 </resources>

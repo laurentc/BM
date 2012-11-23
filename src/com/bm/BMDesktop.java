@@ -20,14 +20,17 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 public class BMDesktop {
-	private static BMDesktop instance = null; 
-	public final String BM_URI = "http://www.bonjourmadame.fr";
-	//public final String BM_URI = "http://www.darkrain.fr/slide/";
-	public final String BM_PATTERN = "<div[^>]*class=\"photo-panel\">.+?<img[^>]*src=\"([^\"]*)\"";
+	private static BMDesktop instance = null;
+	private String uri_to_parse = null;
+	public String pattern_to_find = null;
 	private Context context = null;
 	private String uri = null;
+	private BMDBParameters parameters;
 
 	public BMDesktop(Context context) {
+		parameters = BMDBParameters.getInstance(context);
+		uri_to_parse = parameters.getValue("url");
+		pattern_to_find = parameters.getValue("pattern");
 		this.context = context;
 	}
 	
@@ -45,14 +48,16 @@ public class BMDesktop {
 			try {
 				WallpaperManager wpm = WallpaperManager.getInstance(context);
 				Bitmap bitmap = getImage();
-				int width = wpm.getDesiredMinimumWidth();//960
-				int height = wpm.getDesiredMinimumHeight();//800
-				int imageWidth = bitmap.getWidth();
-				int imageHeight = bitmap.getHeight();
-				Bitmap resized = Bitmap.createScaledBitmap(bitmap, imageWidth, height, false);
-				wpm.setBitmap(resized);
-				
-				return true;
+				if(bitmap != null){
+					int width = wpm.getDesiredMinimumWidth();//960
+					int height = wpm.getDesiredMinimumHeight();//800
+					int imageWidth = bitmap.getWidth();
+					int imageHeight = bitmap.getHeight();
+					Bitmap resized = Bitmap.createScaledBitmap(bitmap, wpm.getDesiredMinimumWidth(), wpm.getDesiredMinimumHeight(), true);
+					wpm.setBitmap(resized);
+					
+					return true;
+				}
 			} catch (MalformedURLException e) {
 				Log.e("BMDesktop.refreshDesktop", e.getMessage());
 			} catch (IOException e) {
@@ -70,7 +75,7 @@ public class BMDesktop {
 			return uri;
 		}
 		String content = getURIContent();
-		Pattern pattern = Pattern.compile(BM_PATTERN, Pattern.DOTALL);
+		Pattern pattern = Pattern.compile(pattern_to_find, Pattern.DOTALL);
 		Matcher mtc = pattern.matcher(content.toString());				
 		if(mtc.find()){
 			return mtc.group(1);
@@ -86,7 +91,7 @@ public class BMDesktop {
         URL url;
         StringBuilder content = new StringBuilder();
 		try {
-			url = new URL(BM_URI);
+			url = new URL(uri_to_parse);
 	        URLConnection con = url.openConnection(Proxy.NO_PROXY);
 			try{
 				InputStreamReader isr = new InputStreamReader(con.getInputStream());
@@ -127,7 +132,7 @@ public class BMDesktop {
 		if(uri != null){
 			try {
 				url = new URL(getImageURI());
-				URLConnection uc = url.openConnection(Proxy.NO_PROXY);			
+				URLConnection uc = url.openConnection();			
 				return BitmapFactory.decodeStream(uc.getInputStream());		
 			} catch (MalformedURLException e) {
 				Log.e("BMDesktop.getImage", e.getMessage());
